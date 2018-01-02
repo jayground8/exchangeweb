@@ -18,34 +18,64 @@
 				background-color: #fff2f6;
 				color: #E60909;
 			}
-			.plus_color {
+			.plus_color4 {
 				color: green;
 				font-weight: bold;
 				text-decoration: underline;
 			}
-			.minus_color {
-				color: black;
+			.plus_color3 {
+				color: green;
+				font-weight: bold;
+				text-decoration: underline;
+			}
+			.plus_color2 {
+				color: green;
+				font-weight: bold;
+			}
+			.plus_color1 {
+				color: green;
+			}
+			.minus_color1 {
+				color: red;
+			}
+			.minus_color2 {
+				color: red;
+				font-weight: bold;
+			}
+			.minus_color3 {
+				color: red;
+				font-weight: bold;
+				text-decoration: underline;
+			}
+			.minus_color4 {
+				color: #cce0cc;
+				font-weight: bold;
+				text-decoration: underline;
 			}
 			@media only screen and (max-width : 670px) {
 				body {
 					font-size: 9px;
 				}
 			}
+			td {
+				text-align: right;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="container-fluid">
-			<p>BTC 기준가격 : Coinone판매가격</p>
+			<p>BTC 기준가격(Coinone) : <span id="btc-standard"></span></p>
+			<!-- <div class="col-md-8"> -->
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>코인</th>
-						<th>코인원</th>
-						<th>업비트</th>
-						<th>비렉(BTC기준 원)</th>
-						<th class="hidden-xs">비렉(BTC)</th>
-						<th>빗탬(BTC기준 원)</th>
-						<th class="hidden-xs">빗탬(BTC)</th>
+						<th class="col-md-1">코인</th>
+						<th class="col-md-1">코인원</th>
+						<th class="col-md-2">업비트</th>
+						<th class="col-md-2">비렉(BTC원)</th>
+						<th class="hidden-xs col-md-2">비렉(BTC)</th>
+						<th class="col-md-2">빗탬(BTC원)</th>
+						<th class="hidden-xs cod-md-2">빗탬(BTC)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -240,17 +270,67 @@
 					</tr>
 				</tbody>
 			</table>
-			<!-- <div class="container">
-				<div class="row">
-					<select>
-						<option value="1">BCC</option>
-						<option value="2">LTC</option>
-						<option value="3">XRP</option>
-						<option value="3">ETH</option>
-					</select>
-					<input type="number" min="0" id="purchasePrice">
-					<input type="number" min="0" id="purchaseAmount">
+			<!-- </div> -->
+			<!-- <div class="col-md-4">
+			<table class="table table-bordered">
+				<div>
+					
 				</div>
+				<thead>
+					<tr>
+						<th class="col-md-4">전송종류</th>
+						<th class="col-md-4">비렉</th>
+						<th class="col-md-4">빗스템</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-center">XRP-BTC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">XRP-BCC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">XRP-LTC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">LTC-BTC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">LTC-BCC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">LTC-XRP</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">BCC-BTC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">BCC-LTC</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="text-center">BCC-XRP</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 			</div> -->
 		</div>
 		<script type="text/javascript" src="/Scripts/jquery-3.2.1.min.js"></script>
@@ -317,9 +397,9 @@
 		    if(btcList.indexOf(upbit.code) >= 0) {
 		    	const type = upbit.code.split("-")[1].toLowerCase();
 		    	updatePrice('bittrex-' + type + '-ask', upbit.orderbookUnits[0].askPrice.toFixed(8).toString());
-		    	updatePrice('bittrex-' + type + '-ask-base', (upbit.orderbookUnits[0].askPrice*coinoneBTC).toFixed(1));
+		    	updatePrice('bittrex-' + type + '-ask-base', parseInt(upbit.orderbookUnits[0].askPrice*coinoneBTC));
 			    updatePrice('bittrex-' + type + '-bid', upbit.orderbookUnits[0].bidPrice.toFixed(8).toString());
-			    updatePrice('bittrex-' + type + '-bid-base', (upbit.orderbookUnits[0].bidPrice*coinoneBTC).toFixed(1));
+			    updatePrice('bittrex-' + type + '-bid-base', parseInt(upbit.orderbookUnits[0].bidPrice*coinoneBTC));
 			    updateDiff('bittrex', type, 'ask', upbit.orderbookUnits[0].askPrice);
 			    updateDiff('bittrex', type, 'bid', upbit.orderbookUnits[0].bidPrice);
 		    } else if(krwList.indexOf(upbit.code) >= 0) {
@@ -336,7 +416,8 @@
 		 	};
 
 		 	//Coinone Websocket Part
-		 	let coinoneBTC = 1;
+			let coinoneBTC = 1;
+			const displayBtcStandard = document.getElementById("btc-standard"); 
 
 		 	executeAllWebsockets();
 		 	
@@ -367,8 +448,8 @@
 						updatePrice('coinone-' + coin.toLowerCase() + '-bid', bidPrice.toLocaleString());
 						updateData('coinone-' + coin.toLowerCase() + '-bid', askPrice);
 						if (coin == 'BTC') {
-							coinoneBTC = askPrice;
-							// console.log("BTC target", coinoneBTC); 
+							coinoneBTC = bidPrice;
+							displayBtcStandard.innerHTML = bidPrice.toLocaleString();
 						}
 					}
 				});
@@ -391,9 +472,9 @@
 		 			let tradesChannel = pusher.subscribe('order_book_' + coin);
 		 			tradesChannel.bind('data', function(data) {
 		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask', data.asks[0][0]);
-		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask-base', (parseFloat(data.asks[0][0])*coinoneBTC).toFixed(1));
+		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask-base', parseInt(parseFloat(data.asks[0][0])*coinoneBTC));
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid', data.bids[0][0]);
-						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', (parseFloat(data.bids[0][0])*coinoneBTC).toFixed(1));
+						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', parseInt(parseFloat(data.bids[0][0])*coinoneBTC));
 						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0])
 						updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0])
 					});
@@ -428,33 +509,45 @@
 
 				pricePercentage = (priceDiff / basePrice) * 100;
 				selectedTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-diff')
-				selectedTd.innerHTML = priceDiff.toFixed(1).toString() +"(" + pricePercentage.toFixed(2).toString() + "%)";
-				if (priceDiff < 0) {
-					selectedTd.className = "minus_color";
+				selectedTd.innerHTML = parseInt(priceDiff).toLocaleString() +"(" + pricePercentage.toFixed(2).toString() + "%)";
+				if (pricePercentage > 3 ) {
+					selectedTd.className = "plus_color4";
+				} else if (pricePercentage > 2 ) {
+					selectedTd.className = "plus_color3";
+				} else if (pricePercentage > 1 ) {
+					selectedTd.className = "plus_color2";
+				} else if (pricePercentage > 0 ) {
+					selectedTd.className = "plus_color1";
+				} else if (pricePercentage < -3 ) {
+					selectedTd.className = "minus_color4";
+				} else if (pricePercentage < -2 ) {
+					selectedTd.className = "minus_color3";
+				} else if (pricePercentage < -1 ) {
+					selectedTd.className = "minus_color2";
 				} else {
-					selectedTd.className = "plus_color";
+					selectedTd.className = "minus_color1";
 				}
 
-				if (pricePercentage > 2 && audio_flag) {
-					playAlarm('alarm.mp3');
-				}
+				// if (pricePercentage > 2 && audio_flag) {
+				// 	playAlarm('alarm.mp3');
+				// }
 		 	}
 		 	
-		 	playAlarm("/settings.mp3");
+		 	// playAlarm("/settings.mp3");
 			// fetch('https://api.bitflyer.jp/v1/ticker',{cors:true}).then((data)=>{
 			// 	console.log(data);
 			// }).catch((error)=>{
 			// 	console.log(error);
 			// })
-			$.ajax({
-				url: 'https://api.bithumb.com/public/ticker/all',
-				success: function(data) {
-					console.log(data);
-				},
-				error: function(xhr) {
-					console.log(xhr);
-				}
-			})
+			// $.ajax({
+			// 	url: 'https://api.bithumb.com/public/ticker/all',
+			// 	success: function(data) {
+			// 		console.log(data);
+			// 	},
+			// 	error: function(xhr) {
+			// 		console.log(xhr);
+			// 	}
+			// })
 		 	function playAlarm(path) {
 		 		audio_flag = false;
 				const audio = new Audio(path);
