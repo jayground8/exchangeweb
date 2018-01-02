@@ -270,6 +270,62 @@
 					</tr>
 				</tbody>
 			</table>
+
+			<div class="container_fluids">
+				<div class="row">
+					<div class="col-xs-12 col-md-2">
+					<label>원화 <input id="input-won" type="number" value=11000000 min=0></label>
+					</div>
+					<div class="col-xs-12 col-md-2">
+					<label>달러 <input id="input-dollar" type="number" value=10000 min=0></label>
+					</div>
+					<div class="col-xs-12 col-md-2">
+					<label>환율 <input id="input-exchange-rate" type="text" value=1100 readonly></label>
+					</div>
+				</div>
+			</div>
+			
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">종류</th>
+						<th class="text-center">빗탬(달러)</th>
+						<th class="text-center">빗탬(원)</th>
+						<th class="text-center">코인원(원)</th>
+						<th class="text-center">이익</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- <tr>
+						<td class="text-center">BTC</td>
+						<td class="text-right" id="btc-dollar"></td>
+						<td class="text-right" id="btc-dollar-won"></td>
+						<td class="text-right" id="btc-won"></td>
+						<td class="text-right" id="btc-profit"></td>
+					</tr> -->
+					<tr>
+						<td class="text-center">BCH</td>
+						<td class="text-right" id="bch-dollar"></td>
+						<td class="text-right" id="bch-dollar-won"></td>
+						<td class="text-right" id="bch-won"></td>
+						<td class="text-right" id="bch-profit"></td>
+					</tr>
+					<tr>
+						<td class="text-center">XRP</td>
+						<td class="text-right" id="xrp-dollar"></td>
+						<td class="text-right" id="xrp-dollar-won"></td>
+						<td class="text-right" id="xrp-won"></td>
+						<td class="text-right" id="xrp-profit"></td>
+					</tr>
+					<tr>
+						<td class="text-center">LTC</td>
+						<td class="text-right" id="ltc-dollar"></td>
+						<td class="text-right" id="ltc-dollar-won"></td>
+						<td class="text-right" id="ltc-won"></td>
+						<td class="text-right" id="ltc-profit"></td>
+					</tr>
+				</tbody>
+			</table>
 			<!-- </div> -->
 			<!-- <div class="col-md-4">
 			<table class="table table-bordered">
@@ -341,16 +397,61 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 		<script type="text/javascript" src="/localStoragePolyfill.js"></script>
 		<script>
+			// Bitstamp dollar exchange table
+			const internationalBankFee = 0.0005
+			const tradingFee = 0.0025
+			const input_dollar = document.getElementById("input-dollar");
+			const input_won = document.getElementById("input-won");
+			const input_exchange_rate = document.getElementById("input-exchange-rate");
+			let dollar = 10000;
+			let won = 11000000;
+			let exchangeRate = 1100;
+
 			// LocalStorage
 
-			if (localStorage.getItem("alarm")) {
-				console.log("local", localStorage.getItem("alarm"));
-			} else {
-				console.log("local x");
+			if (localStorage.getItem("dollar")) {
+				console.log(localStorage.getItem("dollar"));
+				dollar = localStorage.getItem("dollar");
+				input_dollar.value = dollar;
+			} 
+			if (localStorage.getItem("won")) {
+				won = localStorage.getItem("won");
+				input_won.value = won;
+			}
+			if (localStorage.getItem("exchangeRate")) {
+				exchangeRate = localStorage.getItem("exchangeRate");
+				input_exchange_rate.value = exchangeRate;
+			}
+
+			input_dollar.addEventListener("change", function(event) {
+				console.log(event.target.value, won, exchangeRate);
+				dollar = event.target.value
+				exchangeRate = (won / dollar).toFixed(2); 
+				input_exchange_rate.value = exchangeRate;
+				localStorage.setItem("dollar", dollar);
+				localStorage.setItem("exchangeRate", exchangeRate);
+			});
+
+			input_won.addEventListener("change", function(event) {
+				console.log(event.target.value, dollar, exchangeRate);
+				won = event.target.value
+				exchangeRate = (won / dollar).toFixed(2); 
+				input_exchange_rate.value = exchangeRate;
+				localStorage.setItem("won", won);
+				localStorage.setItem("exchangeRate", exchangeRate);
+			});
+
+			function updateDollarExchange(coin, price) {
+				const dw = parseInt(price * exchangeRate);
+				const cw = data["coinone_"+coin+"_bid"];
+				const diff = cw - dw;
+				const percentage = (diff / dw * 100).toFixed(2);
+				document.getElementById(coin+"-dollar").innerHTML = price.toLocaleString();
+				document.getElementById(coin+"-dollar-won").innerHTML = dw.toLocaleString();
+				document.getElementById(coin+"-won").innerHTML = cw.toLocaleString();
+				document.getElementById(coin+"-profit").innerHTML = diff.toLocaleString() + "(" + percentage.toString() + "%)";
 			}
 			
-			localStorage.setItem("alarm", true);
-
 			// Object contains all data
 			let audio_flag = true;
 			let data = {
@@ -466,7 +567,7 @@
 
 		 	function bitstampWebsocket() {
 		 		const coinsBitstamp = ['btcbtc', 'bchbtc', 'xrpbtc', 'ltcbtc', 'ethbtc'];
-
+				const coinsBitstampUsd = ['xrpusd', 'ltcusd', 'bchusd'];
 		 		for(i=0; i<coinsBitstamp.length; i++) {
 		 			let coin = coinsBitstamp[i];
 		 			let tradesChannel = pusher.subscribe('order_book_' + coin);
@@ -475,10 +576,17 @@
 		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask-base', parseInt(parseFloat(data.asks[0][0])*coinoneBTC));
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid', data.bids[0][0]);
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', parseInt(parseFloat(data.bids[0][0])*coinoneBTC));
-						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0])
-						updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0])
+						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0]);
+						updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0]);
 					});
-		 		}
+				 }
+				 for(i=0; i<coinsBitstampUsd.length; i++) {
+					 let coin = coinsBitstampUsd[i];
+					 let tradesChannel = pusher.subscribe('order_book_' + coin);
+					 tradesChannel.bind('data', function(data) {
+						updateDollarExchange(coin.slice(0,3), data.asks[0][0]);
+					 });
+				 }
 		 	}
 
 		 	function updatePrice(id, price) {
