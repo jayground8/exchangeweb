@@ -10,13 +10,21 @@
 		<script type="text/javascript" src="/sockjs.min.js"></script>
 		<script type="text/javascript" src="/pusher.min.js"></script>
 		<style>
+			.coinone_standard {
+				color: #FF7F00;
+				font-weight: bold;
+			}
+			.upbit_standard {
+				color: #0080FF;
+				font-weight: bold;
+			}
 			.ask_color {
 				background-color : #e7f5ff;
-				color: #1258C2;
+				/* color: #1258C2; */
 			}
 			.bid_color {
 				background-color: #fff2f6;
-				color: #E60909;
+				/* color: #E60909; */
 			}
 			.plus_color4 {
 				color: green;
@@ -48,7 +56,7 @@
 				text-decoration: underline;
 			}
 			.minus_color4 {
-				color: #cce0cc;
+				color: red;
 				font-weight: bold;
 				text-decoration: underline;
 			}
@@ -64,18 +72,21 @@
 	</head>
 	<body>
 		<div class="container-fluid">
-			<p>BTC 기준가격(Coinone) : <span id="btc-standard"></span></p>
+			<p>
+				[BTC 기준가격] <span class="coinone_standard">Coinone : <span id="btc-standard"></span></span> <span class="upbit_standard">Upbit : <span id="btc-standard-upbit"></span></span>
+			</p>
 			<!-- <div class="col-md-8"> -->
 			<table class="table table-bordered">
 				<thead>
 					<tr>
 						<th class="col-md-1">코인</th>
 						<th class="col-md-1">코인원</th>
-						<th class="col-md-2">업비트</th>
-						<th class="col-md-2">비렉(BTC원)</th>
-						<th class="hidden-xs col-md-2">비렉(BTC)</th>
-						<th class="col-md-2">빗탬(BTC원)</th>
-						<th class="hidden-xs cod-md-2">빗탬(BTC)</th>
+						<th class="col-md-2 coinone_standard">업비트</th>
+						<th class="col-md-2 upbit_standard">업비트<br class="visiable-xs">(BTC원)</th>
+						<th class="col-md-2 coinone_standard">비렉<br class="visiable-xs">(BTC원)</th>
+						<th class="hidden-xs col-md-1">비렉(BTC)</th>
+						<th class="col-md-2 coinone_standard">빗탬<br class="visiable-xs">(BTC원)</th>
+						<th class="hidden-xs cod-md-1">빗탬(BTC)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -87,6 +98,7 @@
 							<br>
 							<span id="upbit-btc-ask-base-diff"></span>
 						</td>
+						<td class="ask_color"></td>
 						<td class="ask_color" id="bittrex-btc-ask"></td>
 						<td class="ask_color hidden-xs"></td>
 						<td class="ask_color" id="bitstamp-btc-ask"></td>
@@ -98,7 +110,10 @@
 							<span id="upbit-btc-bid"></span>
 							<br>
 							<span id="upbit-btc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-btc-bid-base-percent"></span>
 						</td>
+						<td class="bid_color"></td>
 						<td class="bid_color" id="bittrex-btc-bid"></td>
 						<td class="bid_color hidden-xs"></td>
 						<td class="bid_color" id="bitstamp-btc-bid"></td>
@@ -112,6 +127,7 @@
 							<br>
 							<span id="upbit-bcc-ask-base-diff"></span>
 						</td>
+						<td class="ask_color" id="upbit-btc-bcc-ask"></td>
 						<td class="ask_color">
 							<span id="bittrex-bcc-ask-base"></span>
 							<br>
@@ -131,17 +147,30 @@
 							<span id="upbit-bcc-bid"></span>
 							<br>
 							<span id="upbit-bcc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-bcc-bid-base-percent"></span>
+						</td>
+						<td class="bid_color">
+							<span id="upbit-btc-bcc-bid"></span>
+							<br>
+							<span id="upbit-btc-bcc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-btc-bcc-bid-base-percent"></span>
 						</td>
 						<td class="bid_color">
 							<span id="bittrex-bcc-bid-base"></span>
 							<br>
 							<span id="bittrex-bcc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bittrex-bcc-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bittrex-bcc-bid"></td>
 						<td class="bid_color">
 							<span id="bitstamp-bch-bid-base"></span>
 							<br>
 							<span id="bitstamp-bch-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bitstamp-bch-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bitstamp-bch-bid"></td>
 					</tr>
@@ -153,6 +182,7 @@
 							<br>
 							<span id="upbit-xrp-ask-base-diff"></span>
 						</td>
+						<td class="ask_color" id="upbit-btc-xrp-ask"></td>
 						<td class="ask_color">
 							<span id="bittrex-xrp-ask-base"></span>
 							<br>
@@ -172,17 +202,30 @@
 							<span id="upbit-xrp-bid"></span>
 							<br>
 							<span id="upbit-xrp-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-xrp-bid-base-percent"></span>
+						</td>
+						<td class="bid_color">
+							<span id="upbit-btc-xrp-bid"></span>
+							<br>
+							<span id="upbit-btc-xrp-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-btc-xrp-bid-base-percent"></span>
 						</td>
 						<td class="bid_color">
 							<span id="bittrex-xrp-bid-base"></span>
 							<br>
 							<span id="bittrex-xrp-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bittrex-xrp-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bittrex-xrp-bid"></td>
 						<td class="bid_color">
 							<span id="bitstamp-xrp-bid-base"></span>
 							<br>
 							<span id="bitstamp-xrp-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bitstamp-xrp-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bitstamp-xrp-bid"></td>
 					</tr>
@@ -194,6 +237,7 @@
 							<br>
 							<span id="upbit-ltc-ask-base-diff"></span>
 						</td>
+						<td class="ask_color" id="upbit-btc-ltc-ask"></td>
 						<td class="ask_color">
 							<span id="bittrex-ltc-ask-base"></span>
 							<br>
@@ -213,17 +257,30 @@
 							<span id="upbit-ltc-bid"></span>
 							<br>
 							<span id="upbit-ltc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-ltc-bid-base-percent"></span>
+						</td>
+						<td class="bid_color">
+							<span id="upbit-btc-ltc-bid"></span>
+							<br>
+							<span id="upbit-btc-ltc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-btc-ltc-bid-base-percent"></span>
 						</td>
 						<td class="bid_color">
 							<span id="bittrex-ltc-bid-base"></span>
 							<br>
 							<span id="bittrex-ltc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bittrex-ltc-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bittrex-ltc-bid"></td>
 						<td class="bid_color">
 							<span id="bitstamp-ltc-bid-base"></span>
 							<br>
 							<span id="bitstamp-ltc-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bitstamp-ltc-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bitstamp-ltc-bid"></td>
 					</tr>
@@ -235,6 +292,7 @@
 							<br>
 							<span id="upbit-eth-ask-base-diff"></span>
 						</td>
+						<td class="ask_color" id="upbit-btc-eth-ask"></td>
 						<td class="ask_color">
 							<span id="bittrex-eth-ask-base"></span>
 							<br>
@@ -254,17 +312,30 @@
 							<span id="upbit-eth-bid"></span>
 							<br>
 							<span id="upbit-eth-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-eth-bid-base-percent"></span>
+						</td>
+						<td class="bid_color">
+							<span id="upbit-btc-eth-bid"></span>
+							<br>
+							<span id="upbit-btc-eth-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="upbit-btc-eth-bid-base-percent"></span>
 						</td>
 						<td class="bid_color">
 							<span id="bittrex-eth-bid-base"></span>
 							<br>
 							<span id="bittrex-eth-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bittrex-eth-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bittrex-eth-bid"></td>
 						<td class="bid_color">
 							<span id="bitstamp-eth-bid-base"></span>
 							<br>
 							<span id="bitstamp-eth-bid-base-diff"></span>
+							<br class="visible-xs">
+							<span id="bitstamp-eth-bid-base-percent"></span>
 						</td>
 						<td class="bid_color hidden-xs" id="bitstamp-eth-bid"></td>
 					</tr>
@@ -390,7 +461,6 @@
 			</div> -->
 		</div>
 		<script type="text/javascript" src="/Scripts/jquery-3.2.1.min.js"></script>
-		<!-- <script type="text/javascript" src="/Scripts/jquery-1.6.4.js"></script> -->
 		<script type="text/javascript" src="/Scripts/jquery.signalr2.2.2.min.js"></script>
 		<!-- <script type="text/javascript" src="/signalr/hubs"></script> -->
 		<script type="text/javascript" src="/bootstrap.min.js"></script>
@@ -398,8 +468,6 @@
 		<script type="text/javascript" src="/localStoragePolyfill.js"></script>
 		<script>
 			// Bitstamp dollar exchange table
-			const internationalBankFee = 0.0005
-			const tradingFee = 0.0025
 			const input_dollar = document.getElementById("input-dollar");
 			const input_won = document.getElementById("input-won");
 			const input_exchange_rate = document.getElementById("input-exchange-rate");
@@ -408,9 +476,7 @@
 			let exchangeRate = 1100;
 
 			// LocalStorage
-
 			if (localStorage.getItem("dollar")) {
-				console.log(localStorage.getItem("dollar"));
 				dollar = localStorage.getItem("dollar");
 				input_dollar.value = dollar;
 			} 
@@ -424,7 +490,6 @@
 			}
 
 			input_dollar.addEventListener("change", function(event) {
-				console.log(event.target.value, won, exchangeRate);
 				dollar = event.target.value
 				exchangeRate = (won / dollar).toFixed(2); 
 				input_exchange_rate.value = exchangeRate;
@@ -433,7 +498,6 @@
 			});
 
 			input_won.addEventListener("change", function(event) {
-				console.log(event.target.value, dollar, exchangeRate);
 				won = event.target.value
 				exchangeRate = (won / dollar).toFixed(2); 
 				input_exchange_rate.value = exchangeRate;
@@ -469,47 +533,62 @@
 
 			// Upbit Websocket Part
 			const sock = new SockJS("https://crix-websocket.upbit.com/sockjs");
-			
+			let upbitBTC = 1;
+			const upbitKrwTradeFee = 0.0005;
+			const upbitBtcTradeFee = 0.0025;
+			const displayBtcStandardUpbit = document.getElementById("btc-standard-upbit");
 			const krwList = [
 											"CRIX.UPBIT.KRW-BTC",
 			    					 		"CRIX.UPBIT.KRW-BCC", 
 			    					 		"CRIX.UPBIT.KRW-XRP",
 			    					 		"CRIX.UPBIT.KRW-LTC",
 			    					 		"CRIX.UPBIT.KRW-ETH"
-											];
+							];
 			const btcList = [
 			    					 		"CRIX.UPBIT.BTC-BCC", 
 			    					 		"CRIX.UPBIT.BTC-XRP",
 			    					 		"CRIX.UPBIT.BTC-LTC",
 			    					 		"CRIX.UPBIT.BTC-ETH"
-			                ]
+			                ];
+
 			sock.onopen = function() {
-		    console.log('open');
-		    sock.send(JSON.stringify([
-		    	{	type: "crixOrderbook", 
-		    		codes: krwList.concat(btcList)
-		    	},
-		    	{ ticket: "ram macbook" }
-		    ]));
+				console.log('open');
+				sock.send(JSON.stringify([
+					{	type: "crixOrderbook", 
+						codes: krwList.concat(btcList)
+					},
+					{ ticket: "ram macbook" }
+				]));
 			};
 
 		 	sock.onmessage = function(e) {
-		    const upbit = JSON.parse(e.data);
-		    if(btcList.indexOf(upbit.code) >= 0) {
-		    	const type = upbit.code.split("-")[1].toLowerCase();
-		    	updatePrice('bittrex-' + type + '-ask', upbit.orderbookUnits[0].askPrice.toFixed(8).toString());
-		    	updatePrice('bittrex-' + type + '-ask-base', parseInt(upbit.orderbookUnits[0].askPrice*coinoneBTC));
-			    updatePrice('bittrex-' + type + '-bid', upbit.orderbookUnits[0].bidPrice.toFixed(8).toString());
-			    updatePrice('bittrex-' + type + '-bid-base', parseInt(upbit.orderbookUnits[0].bidPrice*coinoneBTC));
-			    updateDiff('bittrex', type, 'ask', upbit.orderbookUnits[0].askPrice);
-			    updateDiff('bittrex', type, 'bid', upbit.orderbookUnits[0].bidPrice);
-		    } else if(krwList.indexOf(upbit.code) >= 0) {
-		    	const type = upbit.code.split("-")[1].toLowerCase();
-			    updatePrice('upbit-' + type + '-ask', upbit.orderbookUnits[0].askPrice);
-			    updatePrice('upbit-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
-				updateDiff('upbit', type, 'ask', upbit.orderbookUnits[0].askPrice);
-				updateDiff('upbit', type, 'bid', upbit.orderbookUnits[0].bidPrice);	
-		    }
+				const upbit = JSON.parse(e.data);
+				const type = upbit.code.split("-")[1].toLowerCase();
+				if(btcList.indexOf(upbit.code) >= 0) {
+					updatePrice('bittrex-' + type + '-ask', upbit.orderbookUnits[0].askPrice.toFixed(8).toString());
+					updatePrice('bittrex-' + type + '-ask-base', parseInt(upbit.orderbookUnits[0].askPrice*coinoneBTC));
+					updatePrice('bittrex-' + type + '-bid', upbit.orderbookUnits[0].bidPrice.toFixed(8).toString());
+					updatePrice('bittrex-' + type + '-bid-base', parseInt(upbit.orderbookUnits[0].bidPrice*coinoneBTC));
+					// updateDiff('bittrex', type, 'ask', upbit.orderbookUnits[0].askPrice);
+					updateDiff('bittrex', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+
+					if (type != 'btc') {
+						updatePrice('upbit-btc-' + type + '-ask', parseInt(upbit.orderbookUnits[0].askPrice*upbitBTC));
+						updatePrice('upbit-btc-' + type + '-bid', parseInt(upbit.orderbookUnits[0].bidPrice*upbitBTC));
+						updateDiff('upbit-btc', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					}
+					
+				} else if(krwList.indexOf(upbit.code) >= 0) {
+					updatePrice('upbit-' + type + '-ask', upbit.orderbookUnits[0].askPrice);
+					updatePrice('upbit-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
+					// updateDiff('upbit', type, 'ask', upbit.orderbookUnits[0].askPrice);
+					updateDiff('upbit', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					
+					if (type == 'btc') {
+						upbitBTC = upbit.orderbookUnits[0].bidPrice;
+						displayBtcStandardUpbit.innerHTML = upbitBTC.toLocaleString();
+					}
+				}
 		 	};
 
 		 	sock.onclose = function() {
@@ -577,7 +656,7 @@
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid', data.bids[0][0]);
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', parseInt(parseFloat(data.bids[0][0])*coinoneBTC));
 						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0]);
-						updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0]);
+						// updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0]);
 					});
 				 }
 				 for(i=0; i<coinsBitstampUsd.length; i++) {
@@ -604,37 +683,52 @@
 		 		let selectedTd;
 		 		
 				if (coin == 'bcc') {
-					basePrice = data['coinone_bch_'+type];
+					basePrice = data['coinone_bch_ask'];
 				} else {
-					basePrice = data['coinone_'+coin+'_'+type];
+					basePrice = data['coinone_'+coin+'_ask'];
 				}
 				
-				if (basePrice != null && exchange=='upbit') {
+				if (basePrice != null && exchange =='upbit') {
 					priceDiff = price - basePrice;
+				} else if (exchange == 'upbit-btc') {
+					priceDiff = price * upbitBTC - basePrice;
 				} else {
-					priceDiff = price * data['coinone_btc_'+type] - basePrice;
+					priceDiff = price * data['coinone_btc_ask'] - basePrice;
 				}
 
 				pricePercentage = (priceDiff / basePrice) * 100;
-				selectedTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-diff')
-				selectedTd.innerHTML = parseInt(priceDiff).toLocaleString() +"(" + pricePercentage.toFixed(2).toString() + "%)";
-				if (pricePercentage > 3 ) {
-					selectedTd.className = "plus_color4";
-				} else if (pricePercentage > 2 ) {
-					selectedTd.className = "plus_color3";
-				} else if (pricePercentage > 1 ) {
-					selectedTd.className = "plus_color2";
-				} else if (pricePercentage > 0 ) {
-					selectedTd.className = "plus_color1";
-				} else if (pricePercentage < -3 ) {
-					selectedTd.className = "minus_color4";
-				} else if (pricePercentage < -2 ) {
-					selectedTd.className = "minus_color3";
-				} else if (pricePercentage < -1 ) {
-					selectedTd.className = "minus_color2";
-				} else {
-					selectedTd.className = "minus_color1";
+				diffTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-diff');
+				percentTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-percent');
+				if (diffTd && percentTd) {
+					diffTd.innerHTML = parseInt(priceDiff).toLocaleString();
+					percentTd.innerHTML = "(" + pricePercentage.toFixed(2).toString() + "%)";
+					if (pricePercentage > 3 ) {
+						diffTd.className = "plus_color4";
+						percentTd.className = "plus_color4";
+					} else if (pricePercentage > 2 ) {
+						diffTd.className = "plus_color3";
+						percentTd.className = "plus_color3";
+					} else if (pricePercentage > 1 ) {
+						diffTd.className = "plus_color2";
+						percentTd.className = "plus_color2";
+					} else if (pricePercentage > 0 ) {
+						diffTd.className = "plus_color1";
+						percentTd.className = "plus_color1";
+					} else if (pricePercentage < -3 ) {
+						diffTd.className = "minus_color4";
+						percentTd.className = "minus_color4";
+					} else if (pricePercentage < -2 ) {
+						diffTd.className = "minus_color3";
+						percentTd.className = "minus_color3";
+					} else if (pricePercentage < -1 ) {
+						diffTd.className = "minus_color2";
+						percentTd.className = "minus_color2";
+					} else {
+						diffTd.className = "minus_color1";
+						percentTd.className = "minus_color1";
+					}
 				}
+				
 
 				// if (pricePercentage > 2 && audio_flag) {
 				// 	playAlarm('alarm.mp3');
