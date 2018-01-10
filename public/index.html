@@ -75,272 +75,30 @@
 			<p>
 				[BTC 기준가격] <span class="coinone_standard">Coinone : <span id="btc-standard"></span></span> <span class="upbit_standard">Upbit : <span id="btc-standard-upbit"></span></span>
 			</p>
-			<!-- <div class="col-md-8"> -->
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th class="col-md-1">코인</th>
-						<th class="col-md-1">코인원</th>
-						<th class="col-md-2 coinone_standard">업비트</th>
-						<th class="col-md-2 upbit_standard">업비트<br class="visiable-xs">(BTC원)</th>
-						<th class="col-md-2 coinone_standard">비렉<br class="visiable-xs">(BTC원)</th>
-						<th class="hidden-xs col-md-1">비렉(BTC)</th>
-						<th class="col-md-2 coinone_standard">빗탬<br class="visiable-xs">(BTC원)</th>
-						<th class="hidden-xs cod-md-1">빗탬(BTC)</th>
+			<div id="exchange-table">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="col-md-1">코인</th>
+							<th class="col-md-1">코인원</th>
+							<th class="col-md-2 coinone_standard">업비트</th>
+							<th class="col-md-2 upbit_standard">업비트<br class="visiable-xs">(BTC원)</th>
+							<th class="col-md-2 coinone_standard">비렉<br class="visiable-xs">(BTC원)</th>
+							<th class="col-md-1">비렉(BTC)</th>
+							<th class="col-md-2 coinone_standard">빗탬<br class="visiable-xs">(BTC원)</th>
+							<th class="cod-md-1">빗탬(BTC)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr is=exchange-line
+						v-for="item in lines"
+						v-bind:line='item'
+						v-bind:key='item.id'
+						v-bind:class='{ ask_color: item.ask, bid_color: item.bid}'>
 					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td rowspan="2">BTC</td>
-						<td class="ask_color" id="coinone-btc-ask"></td>
-						<td class="ask_color">
-							<span id="upbit-btc-ask"></span>
-							<br>
-							<span id="upbit-btc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color"></td>
-						<td class="ask_color" id="bittrex-btc-ask"></td>
-						<td class="ask_color hidden-xs"></td>
-						<td class="ask_color" id="bitstamp-btc-ask"></td>
-						<td class="ask_color hidden-xs"></td>
-					</tr>
-					<tr>
-						<td class="bid_color" id="coinone-btc-bid"></td>
-						<td class="bid_color">
-							<span id="upbit-btc-bid"></span>
-							<br>
-							<span id="upbit-btc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-btc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color"></td>
-						<td class="bid_color" id="bittrex-btc-bid"></td>
-						<td class="bid_color hidden-xs"></td>
-						<td class="bid_color" id="bitstamp-btc-bid"></td>
-						<td class="bid_color hidden-xs"></td>
-					</tr>
-					<tr>
-						<td rowspan="2">BCC</td>
-						<td class="ask_color" id="coinone-bch-ask"></td>
-						<td class="ask_color">
-							<span id="upbit-bcc-ask"></span>
-							<br>
-							<span id="upbit-bcc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color" id="upbit-btc-bcc-ask"></td>
-						<td class="ask_color">
-							<span id="bittrex-bcc-ask-base"></span>
-							<br>
-							<span id="bittrex-bcc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bittrex-bcc-ask"></td>
-						<td class="ask_color">
-							<span id="bitstamp-bch-ask-base"></span>
-							<br>
-							<span id="bitstamp-bch-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bitstamp-bch-ask"></td>
-					</tr>
-					<tr>
-						<td class="bid_color" id="coinone-bch-bid"></td>
-						<td class="bid_color">
-							<span id="upbit-bcc-bid"></span>
-							<br>
-							<span id="upbit-bcc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-bcc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="upbit-btc-bcc-bid"></span>
-							<br>
-							<span id="upbit-btc-bcc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-btc-bcc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="bittrex-bcc-bid-base"></span>
-							<br>
-							<span id="bittrex-bcc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bittrex-bcc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bittrex-bcc-bid"></td>
-						<td class="bid_color">
-							<span id="bitstamp-bch-bid-base"></span>
-							<br>
-							<span id="bitstamp-bch-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bitstamp-bch-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bitstamp-bch-bid"></td>
-					</tr>
-					<tr>
-						<td rowspan="2">XRP</td>
-						<td class="ask_color" id="coinone-xrp-ask"></td>
-						<td class="ask_color">
-							<span id="upbit-xrp-ask"></span>
-							<br>
-							<span id="upbit-xrp-ask-base-diff"></span>
-						</td>
-						<td class="ask_color" id="upbit-btc-xrp-ask"></td>
-						<td class="ask_color">
-							<span id="bittrex-xrp-ask-base"></span>
-							<br>
-							<span id="bittrex-xrp-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bittrex-xrp-ask"></td>
-						<td class="ask_color">
-							<span id="bitstamp-xrp-ask-base"></span>
-							<br>
-							<span id="bitstamp-xrp-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bitstamp-xrp-ask"></td>
-					</tr>
-					<tr>
-						<td class="bid_color" id="coinone-xrp-bid"></td>
-						<td class="bid_color">
-							<span id="upbit-xrp-bid"></span>
-							<br>
-							<span id="upbit-xrp-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-xrp-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="upbit-btc-xrp-bid"></span>
-							<br>
-							<span id="upbit-btc-xrp-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-btc-xrp-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="bittrex-xrp-bid-base"></span>
-							<br>
-							<span id="bittrex-xrp-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bittrex-xrp-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bittrex-xrp-bid"></td>
-						<td class="bid_color">
-							<span id="bitstamp-xrp-bid-base"></span>
-							<br>
-							<span id="bitstamp-xrp-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bitstamp-xrp-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bitstamp-xrp-bid"></td>
-					</tr>
-					<tr>
-						<td rowspan="2">LTC</td>
-						<td class="ask_color" id="coinone-ltc-ask"></td>
-						<td class="ask_color">
-							<span id="upbit-ltc-ask"></span>
-							<br>
-							<span id="upbit-ltc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color" id="upbit-btc-ltc-ask"></td>
-						<td class="ask_color">
-							<span id="bittrex-ltc-ask-base"></span>
-							<br>
-							<span id="bittrex-ltc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bittrex-ltc-ask"></td>
-						<td class="ask_color">
-							<span id="bitstamp-ltc-ask-base"></span>
-							<br>
-							<span id="bitstamp-ltc-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bitstamp-ltc-ask"></td>
-					</tr>
-					<tr>
-						<td class="bid_color" id="coinone-ltc-bid"></td>
-						<td class="bid_color">
-							<span id="upbit-ltc-bid"></span>
-							<br>
-							<span id="upbit-ltc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-ltc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="upbit-btc-ltc-bid"></span>
-							<br>
-							<span id="upbit-btc-ltc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-btc-ltc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="bittrex-ltc-bid-base"></span>
-							<br>
-							<span id="bittrex-ltc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bittrex-ltc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bittrex-ltc-bid"></td>
-						<td class="bid_color">
-							<span id="bitstamp-ltc-bid-base"></span>
-							<br>
-							<span id="bitstamp-ltc-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bitstamp-ltc-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bitstamp-ltc-bid"></td>
-					</tr>
-					<tr>
-						<td rowspan="2">ETH</td>
-						<td class="ask_color" id="coinone-eth-ask"></td>
-						<td class="ask_color">
-							<span id="upbit-eth-ask"></span>
-							<br>
-							<span id="upbit-eth-ask-base-diff"></span>
-						</td>
-						<td class="ask_color" id="upbit-btc-eth-ask"></td>
-						<td class="ask_color">
-							<span id="bittrex-eth-ask-base"></span>
-							<br>
-							<span id="bittrex-eth-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bittrex-eth-ask"></td>
-						<td class="ask_color">
-							<span id="bitstamp-eth-ask-base"></span>
-							<br>
-							<span id="bitstamp-eth-ask-base-diff"></span>
-						</td>
-						<td class="ask_color hidden-xs" id="bitstamp-eth-ask"></td>
-					</tr>
-					<tr>
-						<td class="bid_color" id="coinone-eth-bid"></td>
-						<td class="bid_color">
-							<span id="upbit-eth-bid"></span>
-							<br>
-							<span id="upbit-eth-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-eth-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="upbit-btc-eth-bid"></span>
-							<br>
-							<span id="upbit-btc-eth-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="upbit-btc-eth-bid-base-percent"></span>
-						</td>
-						<td class="bid_color">
-							<span id="bittrex-eth-bid-base"></span>
-							<br>
-							<span id="bittrex-eth-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bittrex-eth-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bittrex-eth-bid"></td>
-						<td class="bid_color">
-							<span id="bitstamp-eth-bid-base"></span>
-							<br>
-							<span id="bitstamp-eth-bid-base-diff"></span>
-							<br class="visible-xs">
-							<span id="bitstamp-eth-bid-base-percent"></span>
-						</td>
-						<td class="bid_color hidden-xs" id="bitstamp-eth-bid"></td>
-					</tr>
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
 
 			<div class="container_fluids">
 				<div class="row">
@@ -397,76 +155,71 @@
 					</tr>
 				</tbody>
 			</table>
-			<!-- </div> -->
-			<!-- <div class="col-md-4">
-			<table class="table table-bordered">
-				<div>
-					
-				</div>
-				<thead>
-					<tr>
-						<th class="col-md-4">전송종류</th>
-						<th class="col-md-4">비렉</th>
-						<th class="col-md-4">빗스템</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="text-center">XRP-BTC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">XRP-BCC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">XRP-LTC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">LTC-BTC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">LTC-BCC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">LTC-XRP</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">BCC-BTC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">BCC-LTC</td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td class="text-center">BCC-XRP</td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-			</div> -->
 		</div>
 		<script type="text/javascript" src="/Scripts/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="/Scripts/jquery.signalr2.2.2.min.js"></script>
 		<!-- <script type="text/javascript" src="/signalr/hubs"></script> -->
 		<script type="text/javascript" src="/bootstrap.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 		<script type="text/javascript" src="/localStoragePolyfill.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 		<script>
+			// Vue.js
+			Vue.component('exchange-line', {
+				props: ['line'],
+				template : `<tr>
+											<td>{{ line.coinName }}</td>
+											<td>{{ line.coinone }}</td>
+											<td>
+												<span>{{ line.upbit }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.upbitDiff }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.uptbitPer }}</span>
+											</td>
+											<td>
+												<span>{{ line.upbitKrw }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.upbitKrwDiff }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.upbitKrwPer }}</span>
+											</td>
+											<td>
+												<span>{{ line.bittrexKrw }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.bittrexDiff }}</span>
+												<br v-if="line.bid">
+												<span v-bind:class="{minus_color1:(line.bittrexPer < 0)}">{{ line.bittrexPer }}</span>
+											</td>
+											<td>{{ line.bittrex }}</td>
+											<td>
+												<span>{{ line.bitstampKrw }}</span>
+												<br v-if="line.bid">
+												<span>{{ line.bitstampDiff }}</span>
+												<br v-if="line.bid">
+												<span v-bind:class="{minus_color1:(line.bistampPer < 0)}">{{ line.bitstampPer }}</span>
+											</td>
+											<td>{{ line.bitstamp}} </td>
+										</tr>`
+			});
+
+			var exchangeTable = new Vue({
+				el: '#exchange-table',
+				data: {
+					lines: [
+						{id: 0, coinName: 'BTC', ask: true, bid: false, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 1, coinName: 'BTC', ask: false, bid: true, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 2, coinName: 'BCC', ask: true, bid: false, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 3, coinName: 'BCC', ask: false, bid: true, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 4, coinName: 'XRP', ask: true, bid: false, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 5, coinName: 'XRP', ask: false, bid: true, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 6, coinName: 'LTC', ask: true, bid: false, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 7, coinName: 'LTC', ask: false, bid: true, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 8, coinName: 'ETH', ask: true, bid: false, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+						{id: 9, coinName: 'ETH', ask: false, bid: true, coinone:null, upbit:null, upbitDiff:null, upbitPer:null, upbitKrw:null, upbitKrwDiff:null, upbitKrwPer:null, bittrex:null, bittrexKrw:null, bittrexDiff: null, bittrexPer: null, bitstamp:null, bitstampKrw:null, bitstampDiff:null, bitstampPer:null},
+					]
+				}
+			});
+			
 			// Bitstamp dollar exchange table
 			const input_dollar = document.getElementById("input-dollar");
 			const input_won = document.getElementById("input-won");
@@ -551,6 +304,8 @@
 			    					 		"CRIX.UPBIT.BTC-ETH"
 			                ];
 
+			const coins = { btc:0, bch:2, xrp:4, ltc:6, eth:8 };
+
 			sock.onopen = function() {
 				console.log('open');
 				sock.send(JSON.stringify([
@@ -564,29 +319,43 @@
 		 	sock.onmessage = function(e) {
 				const upbit = JSON.parse(e.data);
 				const type = upbit.code.split("-")[1].toLowerCase();
+				let coin_idx = upbit.code.split("-")[1].toLowerCase();
+				if (coin_idx == 'bcc') {
+					coin_idx = 'bch';
+				}
+				const ask_idx = coins[coin_idx];
+				const bid_idx = coins[coin_idx] + 1;
+				
 				if(btcList.indexOf(upbit.code) >= 0) {
-					updatePrice('bittrex-' + type + '-ask', upbit.orderbookUnits[0].askPrice.toFixed(8).toString());
-					updatePrice('bittrex-' + type + '-ask-base', parseInt(upbit.orderbookUnits[0].askPrice*coinoneBTC));
-					updatePrice('bittrex-' + type + '-bid', upbit.orderbookUnits[0].bidPrice.toFixed(8).toString());
-					updatePrice('bittrex-' + type + '-bid-base', parseInt(upbit.orderbookUnits[0].bidPrice*coinoneBTC));
-					// updateDiff('bittrex', type, 'ask', upbit.orderbookUnits[0].askPrice);
-					updateDiff('bittrex', type, 'bid', upbit.orderbookUnits[0].bidPrice);
-
-					if (type != 'btc') {
-						updatePrice('upbit-btc-' + type + '-ask', parseInt(upbit.orderbookUnits[0].askPrice*upbitBTC));
-						updatePrice('upbit-btc-' + type + '-bid', parseInt(upbit.orderbookUnits[0].bidPrice*upbitBTC));
-						updateDiff('upbit-btc', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					exchangeTable.lines[ask_idx]["bittrex"] = upbit.orderbookUnits[0].askPrice.toFixed(8).toString();
+					exchangeTable.lines[bid_idx]["bittrex"] = upbit.orderbookUnits[0].bidPrice.toFixed(8).toString();
+					
+					if (exchangeTable.lines[1]["coinone"].replace(/,/g,"") && exchangeTable.lines[1]["upbit"].replace(/,/g,"") && exchangeTable.lines[ask_idx]["coinone"].replace(/,/g,"")) {
+						const coinone_coin_ask = parseInt(exchangeTable.lines[ask_idx]["coinone"].replace(/,/g,""));
+						const coinone_btc_bid = parseInt(exchangeTable.lines[1]["coinone"].replace(/,/g,""));
+						const upbit_btc_bid = parseInt(exchangeTable.lines[1]["upbit"].replace(/,/g,""));
+						const upbit_krw_bid = parseInt(upbit.orderbookUnits[0].bidPrice*upbit_btc_bid);
+						const bittrex_krw_bid = parseInt(upbit.orderbookUnits[0].bidPrice*coinone_btc_bid);
+						const upbit_krw_diff = bittrex_krw_bid - coinone_coin_ask;
+						const bittrex_krw_diff = upbit_krw_bid - coinone_coin_ask;
+						exchangeTable.lines[ask_idx]["bittrexKrw"] = parseInt(upbit.orderbookUnits[0].askPrice*coinone_btc_bid).toLocaleString();
+						exchangeTable.lines[bid_idx]["bittrexKrw"] = parseInt(bittrex_krw_bid).toLocaleString();
+						exchangeTable.lines[bid_idx]["bittrexDiff"] = (upbit_krw_diff).toLocaleString();
+						exchangeTable.lines[bid_idx]["bittrexPer"] = (upbit_krw_diff / coinone_coin_ask * 100).toFixed(2).toString();
+						exchangeTable.lines[ask_idx]["upbitKrw"] = parseInt(upbit.orderbookUnits[0].askPrice*upbit_btc_bid).toLocaleString();
+						exchangeTable.lines[bid_idx]["upbitKrw"] = parseInt(upbit_krw_bid).toLocaleString();
+						exchangeTable.lines[bid_idx]["upbitKrwDiff"] = (bittrex_krw_diff).toLocaleString();
+						exchangeTable.lines[bid_idx]["upbitKrwPer"] = (bittrex_krw_diff / coinone_coin_ask * 100).toFixed(2).toString();
 					}
-					
 				} else if(krwList.indexOf(upbit.code) >= 0) {
-					updatePrice('upbit-' + type + '-ask', upbit.orderbookUnits[0].askPrice);
-					updatePrice('upbit-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
-					// updateDiff('upbit', type, 'ask', upbit.orderbookUnits[0].askPrice);
-					updateDiff('upbit', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					exchangeTable.lines[ask_idx]["upbit"] = upbit.orderbookUnits[0].askPrice.toLocaleString();
+					exchangeTable.lines[bid_idx]["upbit"] = upbit.orderbookUnits[0].bidPrice.toLocaleString();
 					
-					if (type == 'btc') {
-						upbitBTC = upbit.orderbookUnits[0].bidPrice;
-						displayBtcStandardUpbit.innerHTML = upbitBTC.toLocaleString();
+					if (exchangeTable.lines[ask_idx]["coinone"].replace(/,/g,"")) {
+						const coinone_coin_ask = parseInt(exchangeTable.lines[ask_idx]["coinone"].replace(/,/g,""));
+						const upbit_per = upbit.orderbookUnits[0].bidPrice - coinone_coin_ask;
+						exchangeTable.lines[bid_idx]["upbitDiff"] = (upbit_per).toLocaleString();
+						exchangeTable.lines[bid_idx]["upbitPer"] = (upbit_per / coinone_coin_ask * 100).toFixed(2).toString();
 					}
 				}
 		 	};
@@ -621,16 +390,22 @@
 
 				socket.on('update', function(data) {
 					if (data) {
+						const ask_idx = coins[coin.toLowerCase()];
+						const bid_idx = coins[coin.toLowerCase()] + 1;
 						const askPrice = parseInt(JSON.parse(data.ASK)[0]['price']);
-						const bidPrice = parseInt(JSON.parse(data.BID)[0]['price']); 
-						updatePrice('coinone-' + coin.toLowerCase() + '-ask', askPrice.toLocaleString());
-						updateData('coinone-' + coin.toLowerCase() + '-ask', askPrice);
-						updatePrice('coinone-' + coin.toLowerCase() + '-bid', bidPrice.toLocaleString());
-						updateData('coinone-' + coin.toLowerCase() + '-bid', askPrice);
-						if (coin == 'BTC') {
-							coinoneBTC = bidPrice;
-							displayBtcStandard.innerHTML = bidPrice.toLocaleString();
+						const bidPrice = parseInt(JSON.parse(data.BID)[0]['price']);
+						if (exchangeTable.lines[bid_idx]["bittrex"] && exchangeTable.lines[bid_idx]["bitstamp"] && exchangeTable.lines[bid_idx]["upbitKrw"]) {
+							const bittrex_krw_bid = parseInt(exchangeTable.lines[bid_idx]["bittrexKrw"].replace(/,/g,""));
+							const bitstamp_krw_bid = parseInt(exchangeTable.lines[bid_idx]["bitstampKrw"].replace(/,/g,""));
+							const upbit_krw_bid = parseInt(exchangeTable.lines[bid_idx]["upbitKrw"].replace(/,/g,"")); 
+							const upbit_bid = parseInt(exchangeTable.lines[bid_idx]["upbit"].replace(/,/g,"")); 
+							exchangeTable.lines[bid_idx]["bittrexDiff"] = (bittrex_krw_bid - askPrice).toLocaleString();
+							exchangeTable.lines[bid_idx]["upbitKrwDiff"] = (upbit_krw_bid - askPrice).toLocaleString();
+							exchangeTable.lines[bid_idx]["upbitDiff"] = (upbit_bid - askPrice).toLocaleString();
+							exchangeTable.lines[bid_idx]["bitstampDiff"] = (bitstamp_krw_bid - askPrice).toLocaleString();
 						}
+						exchangeTable.lines[ask_idx]["coinone"] = askPrice.toLocaleString();
+						exchangeTable.lines[bid_idx]["coinone"] = bidPrice.toLocaleString();
 					}
 				});
 
@@ -651,19 +426,29 @@
 		 			let coin = coinsBitstamp[i];
 		 			let tradesChannel = pusher.subscribe('order_book_' + coin);
 		 			tradesChannel.bind('data', function(data) {
-		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask', data.asks[0][0]);
-		 				updatePrice('bitstamp-' + coin.slice(0,3) + '-ask-base', parseInt(parseFloat(data.asks[0][0])*coinoneBTC));
-						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid', data.bids[0][0]);
-						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', parseInt(parseFloat(data.bids[0][0])*coinoneBTC));
-						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0]);
-						// updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0]);
+						const coin_idx = coin.slice(0,3);
+						const ask_idx = coins[coin_idx];
+						const bid_idx = coins[coin_idx] + 1;
+						exchangeTable.lines[ask_idx]["bitstamp"] = data.asks[0][0];
+						exchangeTable.lines[bid_idx]["bitstamp"] = data.bids[0][0];
+
+						if (exchangeTable.lines[1]["coinone"] && exchangeTable.lines[ask_idx]["coinone"]) {
+							const coinone_btc_bid = parseInt(exchangeTable.lines[1]["coinone"].replace(/,/g,""));
+							const coinone_coin_ask = parseInt(exchangeTable.lines[ask_idx]["coinone"].replace(/,/g,""));
+							const bitstamp_krw_bid = parseInt(parseFloat(data.bids[0][0])*coinone_btc_bid);
+							const bitstamp_krw_diff = bitstamp_krw_bid - coinone_coin_ask;
+							exchangeTable.lines[ask_idx]["bitstampKrw"] = parseInt(parseFloat(data.asks[0][0])*coinone_btc_bid).toLocaleString();
+							exchangeTable.lines[bid_idx]["bitstampKrw"] = bitstamp_krw_bid.toLocaleString();
+							exchangeTable.lines[bid_idx]["bitstampDiff"] = (bitstamp_krw_diff).toLocaleString();
+							exchangeTable.lines[bid_idx]["bitstampPer"] = (bitstamp_krw_diff / coinone_coin_ask * 100).toFixed(2).toString();
+						}
 					});
 				 }
 				 for(i=0; i<coinsBitstampUsd.length; i++) {
 					 let coin = coinsBitstampUsd[i];
 					 let tradesChannel = pusher.subscribe('order_book_' + coin);
 					 tradesChannel.bind('data', function(data) {
-						updateDollarExchange(coin.slice(0,3), data.asks[0][0]);
+						// updateDollarExchange(coin.slice(0,3), data.asks[0][0]);
 					 });
 				 }
 		 	}

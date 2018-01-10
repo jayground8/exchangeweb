@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .component-fade-enter-active, .component-fade-leave-active {
+            /* transition: opacity .3s ease; */
+            transition: all 1s;
+            color:red;
+            }
+            .component-fade-enter, .component-fade-leave-to
+            /* .component-fade-leave-active below version 2.1.8 */ {
+            /* opacity: 0; */
+            transition: all 1s;
+            color:red;
+            }
+            .component-fade-leave
+            /* .component-fade-leave-active below version 2.1.8 */ {
+            /* opacity: 0; */
+            transition: all 1s;
+            color:red;
+            }
+            .list-item {
+            /* display: inline-block; */
+            margin-right: 10px;
+            }
+            .list-enter-active, .list-leave-active {
+            transition: all 1s;
+            color: red;
+            }
+            .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+            opacity: 0;
+            transform: translateY(30px);
+            color: blue;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            {{ message }}
+        </div>
+        <div id="app-2">
+            <span v-bind:title="message">
+                hello title!
+            </span>
+        </div>
+        <div id="app-4">
+            <ol>
+                <li v-for="todo in todos">
+                    {{ todo.text }}
+                </li>
+            </ol>
+        </div>
+
+        <div id="app-7">
+            <table>
+                <thead>
+                    <tr>
+                        <th>name</th>
+                    </tr>
+                </thead>
+                <tbody is="transition-group" name="component-fade">
+                <tr is="todo-item"
+                    v-for="item in groceryList"
+                    v-bind:todo="item"
+                    v-bind:key="item.id">
+                </tr>
+                </transition-group>
+            </table>
+        </div>        
+        
+        <div id="list-demo">
+            <button v-on:click="add">Add</button>
+            <button v-on:click="remove">Remove</button>
+            <transition-group name="list" tag="p">
+                <span v-for="item in items" v-bind:key="item" class="list-item">
+                {{ item }}
+                </span>
+            </transition-group>
+        </div>
+
+        <div id="app9">
+            <ul class="plans">
+                <!-- <plan-component name="Basic" extra="extra" most-Popular></plan-component>
+                <plan-component name="Recreational"></plan-component>
+                <plan-component name="Team"></plan-component> -->
+                <li is="plan-component"
+                    v-for="plan in plans"
+                    v-bind:figure="plan.figure"
+                    v-bind:name="plan.name"
+                    v-bind:extra="plan.extra"
+                    v-bind:key="plan.name">
+                </li>
+            </ul>
+        </div>
+
+        <template id="plan-component">
+            <li v-bind:class="{ 'mostPopular': (extra==2) }">
+                <p>{{ name }} {{figure}}<small v-if="extra" class="popular-plan-label" style="color: red">Most Popular</small></p>
+            </li>
+        </template>
+        
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script>
+            Vue.component('plan-component', {
+                template: '#plan-component',
+                props: {
+                    name: String,
+                    mostPopular: {
+                        type: Boolean,
+                        default: false,
+                    },
+                    extra: String,
+                    figure: Number
+                },
+            });
+
+            new Vue({
+                el: '#app9',
+                data: {
+                    plans : [
+                        {name: "Basic", extra: 1, figure:3},
+                        {name: "Recreational", extra: 2, figure:4},
+                        {name: "Team", extra: 3, figure:5}
+                    ]
+                }
+            });
+
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello Vue'
+                }
+            });
+
+            var app2 = new Vue({
+                el: '#app-2',
+                data: {
+                    message: 'time' + new Date().toLocaleString()
+                }
+            });
+
+            var app4 = new Vue({
+                el: '#app-4',
+                data: {
+                    todos: [
+                        {text: 'learn javascript'},
+                        {text: 'learn Vue'},
+                        {text: 'Build something awesome'}
+                    ]
+                }
+            })
+
+            Vue.component('todo-item', {
+                props: ['todo'],
+                template: '<tr><td>{{todo.text}}</td></tr>'
+            })
+
+            var app7 = new Vue({
+                el: '#app-7',
+                data: {
+                    groceryList: [
+                        {id:0, text:"Hello"},
+                        {id:1, text:"There"}
+                    ]
+                }
+            })
+
+            new Vue({
+                el: '#list-demo',
+                data: {
+                    items: [1,2,3,4,5,6,7,8,9],
+                    nextNum: 10
+                },
+                methods: {
+                    randomIndex: function () {
+                    return Math.floor(Math.random() * this.items.length)
+                    },
+                    add: function () {
+                    this.items.splice(this.randomIndex(), 0, this.nextNum++)
+                    },
+                    remove: function () {
+                    this.items.splice(this.randomIndex(), 1)
+                    },
+                }
+            })
+
+            setInterval(function(){
+                Vue.set(app7.groceryList, 0,{id:0, text:"Holla"});
+                // app7.groceryList[0].text="holla";
+                // app7.groceryList.push({id:2, text:"flash!!"})
+                // app7.groceryList.splice(0, 1, {id:0, text:"flash!!"})
+            }, 2000);
+        </script>
+    </body>
+</html>
