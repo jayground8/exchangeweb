@@ -529,6 +529,27 @@
 				coinone_ltc_bid : null,
 				coinone_eth_ask : null,
 				coinone_eth_bid : null,
+				
+				upbit_btc_bid : null,
+				upbit_bcc_bid : null,
+				upbit_xrp_bid : null,
+				upbit_ltc_bid : null,
+				upbit_eth_bid : null,
+
+				upbit_btc_bcc_bid : null,
+				upbit_btc_xrp_bid : null,
+				upbit_btc_ltc_bid : null,
+				upbit_btc_eth_bid : null,
+
+				bittrex_bcc_bid : null,
+				bittrex_xrp_bid : null,
+				bittrex_ltc_bid : null,
+				bittrex_eth_bid : null,
+
+				bitstamp_bch_bid : null,
+				bitstamp_xrp_bid : null,
+				bitstamp_ltc_bid : null,
+				bitstamp_eth_bid : null,
 			}
 
 			// Upbit Websocket Part
@@ -571,11 +592,13 @@
 					updatePrice('bittrex-' + type + '-bid-base', parseInt(upbit.orderbookUnits[0].bidPrice*coinoneBTC));
 					// updateDiff('bittrex', type, 'ask', upbit.orderbookUnits[0].askPrice);
 					updateDiff('bittrex', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					updateData('bittrex-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
 
 					if (type != 'btc') {
 						updatePrice('upbit-btc-' + type + '-ask', parseInt(upbit.orderbookUnits[0].askPrice*upbitBTC));
 						updatePrice('upbit-btc-' + type + '-bid', parseInt(upbit.orderbookUnits[0].bidPrice*upbitBTC));
 						updateDiff('upbit-btc', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+						updateData('upbit-btc-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
 					}
 					
 				} else if(krwList.indexOf(upbit.code) >= 0) {
@@ -583,6 +606,7 @@
 					updatePrice('upbit-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
 					// updateDiff('upbit', type, 'ask', upbit.orderbookUnits[0].askPrice);
 					updateDiff('upbit', type, 'bid', upbit.orderbookUnits[0].bidPrice);
+					updateData('upbit-' + type + '-bid', upbit.orderbookUnits[0].bidPrice);
 					
 					if (type == 'btc') {
 						upbitBTC = upbit.orderbookUnits[0].bidPrice;
@@ -619,18 +643,27 @@
 					return socket.emit('subscribe', coin, unit)
 				});
 
-				socket.on('update', function(data) {
-					if (data) {
-						const askPrice = parseInt(JSON.parse(data.ASK)[0]['price']);
-						const bidPrice = parseInt(JSON.parse(data.BID)[0]['price']); 
-						updatePrice('coinone-' + coin.toLowerCase() + '-ask', askPrice.toLocaleString());
-						updateData('coinone-' + coin.toLowerCase() + '-ask', askPrice);
-						updatePrice('coinone-' + coin.toLowerCase() + '-bid', bidPrice.toLocaleString());
-						updateData('coinone-' + coin.toLowerCase() + '-bid', askPrice);
+				socket.on('update', function(update) {
+					if (update) {
+						let type = coin.toLowerCase();
+						const askPrice = parseInt(JSON.parse(update.ASK)[0]['price']);
+						const bidPrice = parseInt(JSON.parse(update.BID)[0]['price']); 
+						updatePrice('coinone-' + type + '-ask', askPrice.toLocaleString());
+						updateData('coinone-' + type + '-ask', askPrice);
+						updatePrice('coinone-' + type + '-bid', bidPrice.toLocaleString());
+						updateData('coinone-' + type + '-bid', askPrice);
 						if (coin == 'BTC') {
 							coinoneBTC = bidPrice;
 							displayBtcStandard.innerHTML = bidPrice.toLocaleString();
 						}
+						
+						updateDiff('bitstamp', type, 'bid', data['bitstamp_'+type+'_bid']);
+						if (coin == 'BCH') {
+							type="bcc";
+						}
+						updateDiff('bittrex', type, 'bid', data['bittrex_'+type+'_bid']);
+						updateDiff('upbit', type, 'bid', data['upbit_'+type+'_bid']);
+						updateDiff('upbit-btc', type, 'bid', data['upbit_btc_'+type+'_bid']);
 					}
 				});
 
@@ -656,6 +689,7 @@
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid', data.bids[0][0]);
 						updatePrice('bitstamp-' + coin.slice(0,3) + '-bid-base', parseInt(parseFloat(data.bids[0][0])*coinoneBTC));
 						updateDiff('bitstamp', coin.slice(0,3), 'bid', data.bids[0][0]);
+						updateData('bitstamp-' + coin.slice(0,3) + '-bid', parseFloat(data.bids[0][0]));
 						// updateDiff('bitstamp', coin.slice(0,3), 'ask', data.asks[0][0]);
 					});
 				 }
@@ -688,6 +722,7 @@
 					basePrice = data['coinone_'+coin+'_ask'];
 				}
 				
+				// console.log("base:", price);
 				if (basePrice != null && exchange =='upbit') {
 					priceDiff = price - basePrice;
 				} else if (exchange == 'upbit-btc') {
@@ -695,7 +730,7 @@
 				} else {
 					priceDiff = price * data['coinone_btc_ask'] - basePrice;
 				}
-
+				// console.log("diff:", priceDiff);
 				pricePercentage = (priceDiff / basePrice) * 100;
 				diffTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-diff');
 				percentTd = document.getElementById(exchange+'-'+coin+'-'+type+'-base-percent');
